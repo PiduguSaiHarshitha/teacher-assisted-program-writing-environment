@@ -1,0 +1,97 @@
+#include <iostream>
+#include <string>
+#include <unordered_map>
+
+class Compiler {
+public:
+    bool compileAndRun(const std::string& code) {
+        // Implement code compilation and execution logic here
+        // For simplicity, we will just print the code
+        std::cout << "Executing the following code:\n" << code << "\n";
+        return true;
+    }
+};
+
+class CodeStorage {
+public:
+    bool submitCode(const std::string& studentName, const std::string& code) {
+        // Store the student's code in the codeMap
+        // For simplicity, we will not handle duplicate submissions in this example
+        codeMap[studentName] = code;
+        return true;
+    }
+
+    void reviewCode(const std::string& studentName) {
+        // Retrieve the student's code from the codeMap and display it to the teacher
+        auto it = codeMap.find(studentName);
+        if (it != codeMap.end()) {
+            std::cout << "Code submitted by " << studentName << ":\n" << it->second << "\n";
+        } else {
+            std::cout << "No code found for student " << studentName << ".\n";
+        }
+    }
+
+private:
+    std::unordered_map<std::string, std::string> codeMap;
+};
+
+int main() {
+    Compiler compiler;
+    CodeStorage codeStorage;
+
+    while (true) {
+        std::cout << "Welcome to Teacher Assisted Program Writing Environment (TAPWE)\n";
+        std::cout << "1. Write and Execute C++ Code\n";
+        std::cout << "2. Submit Code for Review\n";
+        std::cout << "3. Exit\n";
+        std::cout << "Enter your choice: ";
+
+        int choice;
+        std::cin >> choice;
+
+        switch (choice) {
+            case 1: {
+                std::cout << "Enter your C++ code:\n";
+                std::string code;
+                std::cin.ignore(); // Ignore newline left in the buffer
+                std::getline(std::cin, code);
+
+                bool success = compiler.compileAndRun(code);
+                if (success) {
+                    std::cout << "Code executed successfully.\n";
+                } else {
+                    std::cout << "Error in code. Please check and try again.\n";
+                }
+                break;
+            }
+            case 2: {
+                std::cout << "Enter your name: ";
+                std::string studentName;
+                std::cin >> studentName;
+
+                std::cout << "Enter your C++ code:\n";
+                std::string code;
+                std::cin.ignore(); // Ignore newline left in the buffer
+                std::getline(std::cin, code);
+
+                bool submissionSuccess = codeStorage.submitCode(studentName, code);
+                if (submissionSuccess) {
+                    std::cout << "Code submitted successfully for review.\n";
+                } else {
+                    std::cout << "Error in code submission. Please try again later.\n";
+                }
+                break;
+            }
+            case 3: {
+                std::cout << "Exiting TAPWE. Goodbye!\n";
+                return 0;
+            }
+            default: {
+                std::cout << "Invalid choice. Please try again.\n";
+                break;
+            }
+        }
+    }
+
+    return 0;
+}
